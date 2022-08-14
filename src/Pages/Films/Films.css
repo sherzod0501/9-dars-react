@@ -1,0 +1,38 @@
+.films {
+  background-color: gray;
+}
+
+.films-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.films-link {
+  text-decoration: none;
+  color: #ffffff;
+  opacity: 0.9;
+  font-size: 17px;
+}
+
+.active-link {
+  color: red;
+  text-decoration: none;
+}
+
+.films-left {
+  display: flex;
+  gap: 17px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.films-input {
+  border: none;
+  padding: 5px 15px;
+  border-radius: 10px;
+}

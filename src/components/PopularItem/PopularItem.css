@@ -1,0 +1,9 @@
+.PopularItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.popular-link {
+  text-decoration: none;
+  color: black;
+}

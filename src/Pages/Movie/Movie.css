@@ -1,0 +1,18 @@
+.Movie {
+  display: flex;
+  align-items: center;
+  padding: 25px;
+  gap: 30px;
+}
+
+.movie-genres {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.movie-companies {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
