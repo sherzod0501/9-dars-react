@@ -1,41 +1,84 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import axios from "axios";
+import { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
+import { BookItem } from "../../components/BookItem/BookItem";
+import { ThemeContext } from "../../Context/themeContext";
 import "./Movie.css";
 
 export const Movie = () => {
+  const { theme } = useContext(ThemeContext);
+  const token = useContext(AuthContext);
   const [data, setData] = useState();
+  const [books, setBooks] = useState([]);
+
   const { id } = useParams();
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=377730aaf04b02ec942be0a20410e5bc`
-    )
-      .then((res) => res.json())
-      .then((data) => setData(data));
+    axios
+      .get(`https://book-service-layer.herokuapp.com/author/authorId/${id}`, {
+        headers: {
+          Authorization: token.token,
+        },
+      })
+      .then((data) => setData(data.data))
+      .catch((err) => console.log(err));
   }, [id]);
 
-  console.log(id);
-  console.log(data);
+  useEffect(() => {
+    axios
+      .get(`https://book-service-layer.herokuapp.com/book/genreId/1`, {
+        headers: {
+          Authorization: token.token,
+        },
+      })
+      .then((data) => setBooks(data.data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
-    <div className="Movie container">
-      <img
-        src={`https://image.tmdb.org/t/p/w300${data?.poster_path}`}
-        alt="card img"
-      />
-      <div className="movie-right">
-        <h3 className="movie-title">{data?.title}</h3>
-        <p className="movie-text">{data?.overview}</p>
-        <div className="movie-genres">
-          <p className="movie-genre-text">Genres:</p>
-          {data?.genres &&
-            data?.genres.map((el) => <p key={el.name}>{el?.name}</p>)}
+    <div className={`${theme} Movie`}>
+      <div className="container movie-container">
+        <div>
+          <div className="single-imgs">
+            <img
+              className="Single-img"
+              src={`https://book-service-layer.herokuapp.com/${data?.image}`}
+              alt="card img"
+            />
+          </div>
+          <div className="author_birth">
+            <div className="author_texts">
+              <p className="author-text"> Tavallud sanasi</p>
+              <p className="author-text"> Vafot etgan sanasi</p>
+            </div>
+            <div className="author-year">
+              <span className="author-span">{data?.date_of_birth}</span> -{" "}
+              <span className="author-span">{data?.date_of_death}</span>
+            </div>
+          </div>
         </div>
-        <div className="movie-companies">
-          <p className="movie-companies-text">Companies:</p>
-          {data?.production_companies &&
-            data?.production_companies.map((el) => (
-              <p key={el.name}>{el?.name}</p>
-            ))}
+        <div className="movie-right">
+          <h3 className="movie-title">{`${data?.first_name} ${data?.last_name}`}</h3>
+          <p className="movie-text">{data?.bio}</p>
+
+          <div className="single-bottom">
+            <div className="single-bottom-top">
+              <h4 className="single-head">Asarlar</h4>
+              <Link to="/books" className="single-text">
+                Barchasini ko’rish
+              </Link>
+            </div>
+          </div>
+          <div className="kitob">
+            {books.length && (
+              <ul className="kitob-list">
+                {books.map(
+                  (e) => (console.log(e), (<BookItem key={e.id} dataa={e} />))
+                )}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     </div>
